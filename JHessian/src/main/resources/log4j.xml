@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="GB2312"?>
+<!DOCTYPE log4j:configuration SYSTEM "http://toolkit.alibaba-inc.com/dtd/log4j/log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+    <!-- ===================================================================== -->
+    <!--  以下是appender的定义                                                 -->
+    <!-- ===================================================================== -->
+
+    <appender name="VSP-BIZ" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="${vsp_log_path_root}/vsp-biz.log"/>
+        <param name="Append" value="true"/>
+        <param name="DatePattern" value="'.'yyyy-MM-dd"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%n%d %n%-5p %c{2} - %m%n"/>
+        </layout>
+    </appender>
+    
+    <appender name="VSP-INTEGRATION" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="${vsp_log_path_root}/vsp-integration.log"/>
+        <param name="Append" value="true"/>
+        <param name="DatePattern" value="'.'yyyy-MM-dd"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%n%d %n%-5p %c{2} - %m%n"/>
+        </layout>
+    </appender>
+    
+    <appender name="VSP-CONFIG" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="${vsp_log_path_root}/vsp-config.log"/>
+        <param name="Append" value="true"/>
+        <param name="DatePattern" value="'.'yyyy-MM-dd"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%n%d %n%-5p %c{2} - %m%n"/>
+        </layout>
+    </appender>
+    
+     <appender name="VSP-ERROR" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="${vsp_log_path_root}/vsp-error.log"/>
+        <param name="Append" value="true"/>
+        <param name="DatePattern" value="'.'yyyy-MM-dd"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%n%d %n%-5p %c{2} - %m%n"/>
+        </layout>
+    </appender>
+    
+    <appender name="VSP-ROUTE" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="${vsp_log_path_root}/vsp-route.log"/>
+        <param name="Append" value="true"/>
+        <param name="DatePattern" value="'.'yyyy-MM-dd"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%n%d %n%-5p %c{2} - %m%n"/>
+        </layout>
+    </appender>
+
+    <!-- TTD定时任务日志 -->
+    <appender name="ttdMonitor" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="${vsp_log_path_root}/vsp-ttd-monitor.log"/>
+        <param name="append" value="true"/>
+        <param name="encoding" value="GBK"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{HH:mm:ss,SSS} [%t] %p %c{1} | %m%n"/>
+        </layout>
+    </appender>
+
+    <!-- schedule center -->
+    <appender name="scheduleMonitor" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="${vsp_log_path_root}/vsp-schedule-monitor.log"/>
+        <param name="append" value="true"/>
+        <param name="encoding" value="GBK"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{HH:mm:ss,SSS} [%t] %p %c{1} | %m%n"/>
+        </layout>
+    </appender>
+
+    <!-- notify log -->
+    <appender name="vspNotify" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="${vsp_log_path_root}/vsp-notify.log"/>
+        <param name="append" value="true"/>
+        <param name="encoding" value="GBK"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{HH:mm:ss,SSS} [%t] %p %c{1} | %m%n"/>
+        </layout>
+    </appender>
+
+    <!-- MsgSend 消息下发日专-->
+    <appender name="msgSend" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="${vsp_log_path_root}/vsp-msgSend.log"/>
+        <param name="append" value="true"/>
+        <param name="encoding" value="GBK"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="[%d{MM-dd HH:mm:ss}][%p][%c]%m%n"/>
+        </layout>
+    </appender>
+
+    <!-- ===================================================================== -->
+    <!--  Root logger的定义                                                    -->
+    <!-- ===================================================================== -->
+
+    <root>
+     	<level value="${vsp_log_level}"/>
+        <appender-ref ref="VSP-BIZ"/>
+    </root>
+
+    <logger name="biz" additivity="false">
+        <level value="${vsp_log_level}" />
+        <appender-ref ref="VSP-BIZ" />
+    </logger>
+    
+    <logger name="INTEGRATION" additivity="false">
+        <level value="${vsp_log_level}" />
+        <appender-ref ref="VSP-INTEGRATION" />
+    </logger>
+    
+    <logger name="CONFIG" additivity="false">
+        <level value="${vsp_log_level}" />
+        <appender-ref ref="VSP-CONFIG" />
+    </logger>
+    
+     <logger name="ROUTE" additivity="false">
+        <level value="${vsp_log_level}" />
+        <appender-ref ref="VSP-ROUTE" />
+    </logger>
+    
+     <logger name="ERROR" additivity="false">
+        <level value="${vsp_log_level}" />
+        <appender-ref ref="VSP-ERROR" />
+    </logger>
+    
+
+    <logger name="com.taobao.cainiao.vsp.core.ttd" additivity="false">
+        <level value="${vsp_log_level}" />
+        <appender-ref ref="ttdMonitor"/>
+    </logger>
+
+    <logger name="com.taobao.cainiao.vsp.core.service.schedule" additivity="false">
+        <level value="${vsp_log_level}" />
+        <appender-ref ref="scheduleMonitor"/>
+    </logger>
+
+    <logger name="com.taobao.cainiao.vsp.notify" additivity="false">
+        <level value="${vsp_log_level}" />
+        <appender-ref ref="vspNotify"/>
+    </logger>
+
+    <logger name="presale" additivity="false">
+        <level value="${vsp_log_level}" />
+        <appender-ref ref="msgSend"/>
+    </logger>
+
+</log4j:configuration>

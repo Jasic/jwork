@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+
+	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd 
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+
+    <description>springJTA</description>
+
+    <!-- 事物管理器 -->
+    <bean id="atomikosUserTransaction" class="com.atomikos.icatch.jta.UserTransactionImp">
+        <description>UserTransactionImp</description>
+        <property name="transactionTimeout" value="300"/>
+    </bean>
+
+    <bean id="atomikosTransactionManager" class="com.atomikos.icatch.jta.UserTransactionManager" init-method="init"
+          destroy-method="close">
+        <description>UserTransactionManager</description>
+        <property name="forceShutdown">
+            <value>true</value>
+        </property>
+    </bean>
+
+    <bean id="transactionManager" class="org.springframework.transaction.jta.JtaTransactionManager">
+        <description>JtaTransactionManager</description>
+        <property name="transactionManager">
+            <ref bean="atomikosTransactionManager"/>
+        </property>
+        <property name="userTransaction">
+            <ref bean="atomikosUserTransaction"/>
+        </property>
+        <property name="allowCustomIsolationLevels" value="true"/>
+        <!--必须设置，否则程序出现异常 JtaTransactionManager does not support custom isolation levels by default-->
+        <!--oracle数据源定义-->
+    </bean>
+    <bean id="oracleDS" class="com.atomikos.jdbc.AtomikosDataSourceBean" init-method="init" destroy-method="close">
+        <description>oracle xa datasource</description>
+        <property name="uniqueResourceName">
+            <value>oracle_ds</value>
+        </property>
+        <property name="xaDataSourceClassName">
+            <value>oracle.jdbc.xa.client.OracleXADataSource</value>
+        </property>
+        <property name="xaProperties">
+            <props>
+                <prop key="user">orcl</prop>
+                <prop key="password">123</prop>
+                <prop key="URL">jdbc:oracle:thin:@ localhost:1521:orcl</prop>
+            </props>
+        </property>
+        <property name="testQuery">
+            <value>select 1 from dual</value>
+            <!--尽力加上，不然会出现告警 >-->
+        </property>
+    </bean>
+
+    <!--mysql数据源定义-->
+    <bean id="dataSourceoracle2" class="com.atomikos.jdbc.AtomikosDataSourceBean" init-method="init"
+          destroy-method="close">
+        <description>mysql xa datasource</description>
+        <property name="uniqueResourceName">
+            <value>mysql_ds</value>
+        </property>
+        <property name="xaDataSourceClassName">
+            <value>com.mysql.jdbc.jdbc2.optional.MysqlXADataSource</value>
+        </property>
+        <property name="xaProperties">
+            <props>
+                <prop key="user">root</prop>
+                <prop key="password">123</prop>
+                <prop key="URL">jdbc:mysql://localhost:3306/test?useUnicode=true&amp;characterEncoding=utf-8</prop>
+            </props>
+        </property>
+        <property name="testQuery">
+            <value>select 1</value>
+            <!--尽力加上，不然会出现告警 >-->
+        </property>
+    </bean>
+
+    <!--  ibatis配置源 -->
+    <bean id="sqlMapClient1" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+        <property name="configLocation" value="classpath:org/jasic/spring/transaction/ibatis-datasoure-1.xml"/>
+        <property name="dataSource" ref="oracleDS"/>
+    </bean>
+
+    <!-- ibatis配置源2 -->
+    <bean id="sqlMapClient2" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+        <property name="configLocation" value="classpath:org/jasic/spring/transaction/ibatis-datasoure-2.xml"/>
+        <property name="dataSource" ref="dataSourceoracle2"/>
+    </bean>
+
+    <bean id="genericDao" class="org.jasic.spring.transaction.dao.GenericDaoImpl"/>
+
+    <bean id="userService" class="org.jasic.spring.transaction.service.UserServiceImpl"/>
+
+    <!--aop配置-->
+    <tx:advice id="transactionManagerAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <tx:method name="*" isolation="READ_COMMITTED" propagation="REQUIRED"
+                       rollback-for="java.lang.RuntimeException"/>
+        </tx:attributes>
+    </tx:advice>
+    <aop:config>
+        <aop:pointcut id="tsServicePc" expression="execution(* com.test.moredata.TestService.*(..))"/>
+        <aop:advisor advice-ref="transactionManagerAdvice" pointcut-ref="tsServicePc"/>
+    </aop:config>
+
+</beans>
