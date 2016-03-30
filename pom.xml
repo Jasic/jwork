@@ -214,6 +214,12 @@
             <version>4.4</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.14.4</version>
+        </dependency>
+
         <!--excel poi的依赖-->
         <dependency>
             <groupId>org.apache.poi</groupId>
