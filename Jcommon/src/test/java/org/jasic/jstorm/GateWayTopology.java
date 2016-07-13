@@ -26,6 +26,7 @@ public class GateWayTopology {
 
         Config conf = new Config();
         conf.setNumAckers(1);
+        conf.put(Config.TOPOLOGY_WORKERS, 1);
 
         StormSubmitter.submitTopology("GateWayTopology", conf, builder.createTopology());
         System.out.println("storm cluster will start");

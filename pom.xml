@@ -13,8 +13,6 @@
         <module>Jrpc</module>
         <module>Jcommon</module>
         <module>JAmq</module>
-        <module>Jmx</module>
-        <module>Jtop</module>
     </modules>
     <url>http://maven.apache.org</url>
 

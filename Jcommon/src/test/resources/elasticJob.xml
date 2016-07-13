@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+       <!-- 配置作业注册中心 -->
+       <bean id="regCenter" class="com.dangdang.ddframe.reg.zookeeper.ZookeeperRegistryCenter" init-method="init">
+              <constructor-arg>
+                     <bean class="com.dangdang.ddframe.reg.zookeeper.ZookeeperConfiguration">
+                            <property name="serverLists" value="${xxx}" />
+                            <property name="namespace" value="${xxx}" />
+                            <property name="baseSleepTimeMilliseconds" value="${xxx}" />
+                            <property name="maxSleepTimeMilliseconds" value="${xxx}" />
+                            <property name="maxRetries" value="${xxx}" />
+                     </bean>
+              </constructor-arg>
+       </bean>
+       <!-- 配置作业-->
+       <bean id="xxxJob" class="com.dangdang.ddframe.job.api.JobScheduler" init-method="init">
+              <constructor-arg ref="regCenter" />
+              <constructor-arg>
+                     <bean class="com.dangdang.ddframe.job.api.JobConfiguration">
+                            <constructor-arg name="jobName" value="xxxJob" />
+                            <constructor-arg name="jobClass" value="xxxDemoJob" />
+                            <constructor-arg name="shardingTotalCount" value="10" />
+                            <constructor-arg name="cron" value="0/10 * * * * ?" />
+                            <property name="shardingItemParameters" value="${xxx}" />
+                     </bean>
+              </constructor-arg>
+       </bean>
+</beans>
