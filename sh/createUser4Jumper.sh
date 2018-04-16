@@ -32,3 +32,5 @@ fi
 
 #增加用户到sudoers
 echo "${name} ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+rm -rf ./createUser4Jumper.sh
+echo "delete createUser4Jumper.sh success!!!" 
