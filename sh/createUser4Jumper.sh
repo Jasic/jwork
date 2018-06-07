@@ -42,12 +42,12 @@ function createUser(){
 	fi
 }
 
-name=admin
-passwd=^ec@youdontkonw.com$
+name="admin"
+passwd="^ec@youdontkonw.com$"
 createUser $name $passwd true
 
-name=jumper
-passwd=$jumper@ecc.midea.com$
+name="jumper"
+passwd="^jumper@ecc.midea.com$"
 createUser $name $passwd false
 		
 rm -rf ./createUser4Jumper.sh
