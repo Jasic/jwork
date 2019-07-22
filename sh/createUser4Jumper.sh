@@ -43,12 +43,17 @@ function createUser(){
 }
 
 name="admin"
-passwd="^ec@youdontkonw.com$"
+passwd="gatewayadmin@2019"
 createUser $name $passwd true
 
 name="jumper"
-passwd="^jumper@ecc.midea.com$"
+passwd="yalS2POydWfI"
 createUser $name $passwd false
-		
-rm -rf ./createUser4Jumper.sh
-echo "delete createUser4Jumper.sh success!!!" 
+
+name="pub"
+passwd="sHUS7NwSdwZw"
+createUser $name $passwd false
+
+path=$(cd `dirname $0`; pwd)
+rm -rf $path/createUser4Jumper.sh
+echo "delete createUser4Jumper.sh success!!!"
