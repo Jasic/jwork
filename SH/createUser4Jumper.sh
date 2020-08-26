@@ -43,15 +43,11 @@ function createUser(){
 }
 
 name="admin"
-passwd="gatewayadmin@2019"
+passwd="admin@gateway"
 createUser $name $passwd true
 
 name="jumper"
-passwd="yalS2POydWfI"
-createUser $name $passwd false
-
-name="pub"
-passwd="sHUS7NwSdwZw"
+passwd="jumper@manage"
 createUser $name $passwd false
 
 path=$(cd `dirname $0`; pwd)
